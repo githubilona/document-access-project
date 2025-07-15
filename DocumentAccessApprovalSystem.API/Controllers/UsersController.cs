@@ -1,4 +1,4 @@
-using DocumentAccessApprovalSystem.Application.Services;
+using DocumentAccessApprovalSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentAccessApprovalSystem.API.Controllers

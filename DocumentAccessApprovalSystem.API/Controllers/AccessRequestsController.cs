@@ -1,8 +1,7 @@
 using DocumentAccessApprovalSystem.API.DTOs;
-using DocumentAccessApprovalSystem.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using DocumentAccessApprovalSystem.Application.Services;
+using DocumentAccessApprovalSystem.Application.Interfaces;
 
 namespace DocumentAccessApprovalSystem.API.Controllers
 {
@@ -22,19 +21,24 @@ namespace DocumentAccessApprovalSystem.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateAccessRequestDto dto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
-            var request = await _accessRequestService.CreateAccessRequestAsync(dto.UserId, dto.DocumentId, dto.Reason, dto.RequestedAccessType);
+            var request = await _accessRequestService.CreateAccessRequestAsync
+                (dto.UserId, dto.DocumentId, dto.Reason, dto.RequestedAccessType);
             return CreatedAtAction(nameof(GetByUser), new { userId = request.UserId }, request);
         }
 
         // GET: api/AccessRequests/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetAccessRequestsById(int id)
         {
-            var request = await _accessRequestService.GetByIdAsync(id);
+            var request = await _accessRequestService.GetAccessRequestsByIdAsync(id);
             if (request == null)
+            {
                 return NotFound();
+            }
             return Ok(request);
         }
 
@@ -42,15 +46,15 @@ namespace DocumentAccessApprovalSystem.API.Controllers
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetByUser(int userId)
         {
-            var requests = await _accessRequestService.GetRequestsByUserAsync(userId);
+            var requests = await _accessRequestService.GetAccessRequestsByUserAsync(userId);
             return Ok(requests);
         }
 
         [Authorize(Roles = "Approver")]
         [HttpGet("pending")]
-        public async Task<IActionResult> GetPending()
+        public async Task<IActionResult> GetPendingAccessRequests()
         {
-            var requests = await _accessRequestService.GetPendingRequestsAsync();
+            var requests = await _accessRequestService.GetPendingAccessRequestsAsync();
             return Ok(requests);
         }
     }

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using DocumentAccessApprovalSystem.Application.Services;
+using DocumentAccessApprovalSystem.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

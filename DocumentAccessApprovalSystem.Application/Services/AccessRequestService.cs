@@ -1,3 +1,4 @@
+using DocumentAccessApprovalSystem.Application.Interfaces;
 using DocumentAccessApprovalSystem.Domain.Entities;
 using DocumentAccessApprovalSystem.Domain.Interfaces;
 
@@ -51,17 +52,17 @@ namespace DocumentAccessApprovalSystem.Application.Services
             return await _accessRequestRepository.CreateAsync(request);
         }
 
-        public async Task<List<AccessRequest>> GetRequestsByUserAsync(int userId)
+        public async Task<List<AccessRequest>> GetAccessRequestsByUserAsync(int userId)
         {
             return await _accessRequestRepository.GetByUserAsync(userId);
         }
 
-        public async Task<AccessRequest?> GetByIdAsync(int id)
+        public async Task<AccessRequest?> GetAccessRequestsByIdAsync(int id)
         {
             return await _accessRequestRepository.GetByIdAsync(id);
         }
 
-        public async Task<List<AccessRequest>> GetPendingRequestsAsync()
+        public async Task<List<AccessRequest>> GetPendingAccessRequestsAsync()
         {
             return await _accessRequestRepository.GetPendingAsync();
         }

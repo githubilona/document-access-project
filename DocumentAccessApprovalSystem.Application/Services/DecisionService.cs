@@ -1,3 +1,4 @@
+using DocumentAccessApprovalSystem.Application.Interfaces;
 using DocumentAccessApprovalSystem.Domain.Entities;
 using DocumentAccessApprovalSystem.Domain.Interfaces;
 
@@ -23,18 +24,25 @@ namespace DocumentAccessApprovalSystem.Application.Services
         {
             var request = await _accessRequestRepository.GetByIdAsync(requestId);
             if (request == null)
+            {
                 throw new ArgumentException("Request not found", nameof(requestId));
+            }
 
             if (request.Status != AccessRequestStatus.Pending)
+            {
                 throw new InvalidOperationException("Request has already been processed");
+            }
 
-            // Validate approver exists and has appropriate role
             var approver = await _userRepository.GetByIdAsync(approverId);
             if (approver == null)
+            {
                 throw new ArgumentException("Approver not found", nameof(approverId));
+            }
 
             if (approver.Role != UserRole.Approver && approver.Role != UserRole.Admin)
+            {
                 throw new UnauthorizedAccessException("User is not authorized to approve requests");
+            }
 
             request.Status = isApproved ? AccessRequestStatus.Approved : AccessRequestStatus.Rejected;
 

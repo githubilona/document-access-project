@@ -22,7 +22,9 @@ namespace DocumentAccessApprovalSystem.API.Controllers
         {
             var user = Users.FirstOrDefault(u => u.Username == dto.Username && u.Password == dto.Password);
             if (user == default)
+            {
                 return Unauthorized();
+            }
 
             var claims = new[]
             {

@@ -1,7 +1,7 @@
 using DocumentAccessApprovalSystem.API.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using DocumentAccessApprovalSystem.Application.Services;
+using DocumentAccessApprovalSystem.Application.Interfaces;
 
 namespace DocumentAccessApprovalSystem.API.Controllers
 {
@@ -21,9 +21,13 @@ namespace DocumentAccessApprovalSystem.API.Controllers
         public async Task<IActionResult> Decide(int id, [FromBody] DecisionDto dto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
             if (id != dto.RequestId)
+            {
                 return BadRequest("RequestId in URL and body do not match");
+            }
 
             var decision = await _decisionService.DecideAsync(dto.RequestId, dto.ApproverId, dto.IsApproved, dto.Comment);
             return Ok(decision);
